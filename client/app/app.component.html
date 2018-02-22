@@ -1,0 +1,137 @@
+<div id="wrapper">
+<div id="header" class="row">
+    <div class="col-md-4">
+        <!-- Logo -->
+        <div id="header-container">
+            <div class="logo">
+                <a [routerLink]="['/home']">
+                    <img src="../assets/img/wimpelycwneu.png" alt="Logo"/>
+                </a>
+            </div>
+            <div class="title">
+                <span>Yachtclub </span>
+                <br>
+                <span>Wendenschloss e.V. B.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Logo -->
+
+    <div class="col-md-8">
+        <div id="hornav">
+            <!--  <div class="col-md-12 no-padding">-->
+            <ul id="hornavmenu" class="nav navbar-nav">
+                <li>
+                    <span [routerLink]="['/home']">Yachthafen</span>
+                    <ul>
+                        <li>
+                            <a [routerLink]="['/ueber']">Über uns</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/geschichte']">Geschichte</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/segelnohneboot']">Segeln ohne Boot</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/gast']">Gästeinfos</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/galerie']">Galerie</a>
+                        </li>
+                    </ul>
+                </li>
+              <li *ngIf="auth.loggedIn">
+                <span [routerLink]="['/usermangement']">Usermanagement</span>
+                <ul>
+                <li>
+                    <a [routerLink]="['/register']" class="nav-item nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                    <i class="fa fa-user-plus"></i> Register
+                </a>
+                </li>
+                  <li>
+                    <a [routerLink]="['/admin']" class="nav-item nav-link" routerLinkActive="active" *ngIf="auth.loggedIn && auth.isAdmin">
+                      <i class="fa fa-lock"></i> Admin
+                    </a>
+                  </li>
+                  <li>
+                    <a [routerLink]="['/logout']" class="nav-item nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
+                      <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+                <li>
+                    <span [routerLink]="['/jugendabteilung']">Jugendabteilung</span>
+                    <ul>
+                        <li>
+                            <a [routerLink]="['/jugendabteilung']">Die Jugend</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/team']">Team</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/regatta']">Regatta</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span [routerLink]="['/termine/allgemein']">Termine</span>
+                    <ul>
+                        <li>
+                            <a [routerLink]="['/termine/allgemein']">Allgemein</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/termine/jugend']">Jugend</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/termine/regatten']">Regatten</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="fa-th" *ngIf="auth.loggedIn">Mitgliederbereich</span>
+                    <ul>
+                        <li>
+                            <a>Dokumente</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/andere']">Mitglieder</a>
+                        </li>
+
+                        <li>
+                            <a [routerLink]="['/faq']">FAQ</a>
+                        </li>
+                    </ul>
+                </li>
+              <li>
+                <a [routerLink]="['/login']" class="nav-item nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
+                  <i class="fa fa-sign-in"></i> Login
+                </a>
+              </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+   <router-outlet> <app-home></app-home> </router-outlet>
+
+<!--Footer-->
+    <div  class="row">
+        <div id="footer" class="col-md-12">
+            <div class="col-md-6"><a href="#"><div class="box">Kontakt</div></a>
+                <a [routerLink]="['/impressum']"> <div class="box">Impressum</div></a>
+                <a href="#"><div class="box">Datenschutz</div></a>
+                <a href="#"><div class="box">Verbände</div></a>
+            </div>
+            <div class="col-md-6 text-right box">© Yachtclub Wendenschloss e.V Berlin</div>
+        </div>
+    </div>
+</div>
+

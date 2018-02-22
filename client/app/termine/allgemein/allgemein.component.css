@@ -1,0 +1,14 @@
+
+
+.date{
+    font-weight: bold;
+}
+
+
+a :active{
+    color: black;
+}
+.table td, .table th {
+  text-align: center;
+  width: 25%;
+}

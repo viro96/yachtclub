@@ -1,0 +1,81 @@
+<app-termine></app-termine>
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Derzetige Regattatermine {{regattenevents.length}}</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+      <tr>
+        <th>Datum</th>
+        <th>Event</th>
+        <th>Ort</th>
+        <th>Teilnehmer</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="regattenevents.length === 0">
+      <tr>
+        <td colspan="4">Es stehen keine neuen Termine an.</td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+      <tr *ngFor="let regattenevent of regattenevents">
+        <td>{{regattenevent.regattendate}}</td>
+        <td>{{regattenevent.regattenthema}}</td>
+        <td>{{regattenevent.regattenplace}}</td>
+        <td>{{regattenevent.regattenguests}}</td>
+        <td *ngIf="auth.loggedIn && auth.isAdmin">
+          <button class="btn btn-sm btn-warning" (click)="enableRegattenEditing(regattenevent)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteRegattenEvent(regattenevent)"><i class="fa fa-trash"></i> Delete</button>
+        </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+      <tr>
+        <td colspan="4">
+          <form class="form-inline" #form="ngForm" (ngSubmit)="editRegattenEvent(regattenevent)" style="display:inline">
+            <div class="form-group">
+              <input class="form-control" type="datetime" name="date" [(ngModel)]="regattenevent.regattendate" placeholder="Datum & Uhrzeit" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="thema" [(ngModel)]="regattenevent.regattenthema" placeholder="Eventname" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="place" [(ngModel)]="regattenevent.regattenplace" placeholder="Ort" step="any" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="number" name="guests" [(ngModel)]="regattenevent.regattenguests" placeholder="0" step="any" min="0" required>
+            </div>
+            <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+          </form>
+          <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="auth.loggedIn && auth.isAdmin">
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Neues Event anlegen</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addRegattenEventForm" (ngSubmit)="addRegattenEvent()" style="text-align:center">
+      <div class="form-group">
+        <input class="form-control" type="datetime" name="regattendate" formControlName="regattendate" placeholder="Datum">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="regattenthema" formControlName="regattenthema" placeholder="Event" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="regattenplace" formControlName="regattenplace" placeholder="Ort" step="any" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="number" name="regattenguests" formControlName="regattenguests" placeholder="Gäste" step="any" min="0">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addRegattenEventForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>
+</div>

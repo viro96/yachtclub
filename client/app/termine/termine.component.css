@@ -1,0 +1,56 @@
+
+
+h2 {
+    text-align: center;
+}
+
+h4{
+    display:inline;
+    margin-right:20px;
+    margin-left:20px;
+    margin-bottom: 50px !important;
+}
+
+
+
+p{
+    font-size: 18px;
+    margin: 20px;
+    float: left;
+}
+
+
+
+.col-md-2{
+    text-align: center;
+}
+
+.col-md-12{
+    padding:0;
+}
+
+.edit{
+    width: 100%;
+    display: inline-block;
+
+    background-color: #f4f4f4;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dddddd;
+}
+
+label{
+    text-align: left !important;
+}
+
+input{
+    width: 300px;
+}
+
+.date{
+    font-weight: bold;
+}
+
+
+a :active{
+    color: black;
+}

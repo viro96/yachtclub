@@ -1,0 +1,79 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Derzeitige Ergebnisse des Vereins {{events.length}}</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+      <tr>
+        <th>Datum</th>
+        <th>Event</th>
+        <th>Ort</th>
+        <th>Ergebnis</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="events.length === 0">
+      <tr>
+        <td colspan="4">Es sind keine Ergebnisse vorhanden</td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+      <tr *ngFor="let event of events">
+        <td>{{event.date}}</td>
+        <td>{{event.thema}}</td>
+        <td>{{event.place}}</td>
+        <td>{{event.result}}</td>
+        <td *ngIf="auth.loggedIn && auth.isAdmin">
+          <button class="btn btn-sm btn-warning" (click)="enableEditing(event)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteEvent(event)"><i class="fa fa-trash"></i> Delete</button>
+        </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+      <tr>
+        <td colspan="4">
+          <form class="form-inline" #form="ngForm" (ngSubmit)="editEvent(event)" style="display:inline">
+            <div class="form-group">
+              <input class="form-control" type="datetime" name="date" [(ngModel)]="event.date" placeholder="Datum & Uhrzeit" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="thema" [(ngModel)]="event.thema" placeholder="Eventname" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="place" [(ngModel)]="event.place" placeholder="Ort" step="any" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="result" [(ngModel)]="event.result" placeholder="0" step="any" min="0" required>
+            </div>
+            <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+          </form>
+          <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div *ngIf="auth.loggedIn && auth.isAdmin">
+  <div class="card" *ngIf="!isEditing">
+    <h4 class="card-header">Neues Event anlegen</h4>
+    <div class="card-block">
+      <form class="form-inline" [formGroup]="addEventForm" (ngSubmit)="addEvent()" style="text-align:center">
+        <div class="form-group">
+          <input class="form-control" type="datetime" name="date" formControlName="date" placeholder="Datum">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="thema" formControlName="thema" placeholder="Event" min="0">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="place" formControlName="place" placeholder="Ort" step="any" min="0">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" name="result" formControlName="result" placeholder="Ergebnis" step="any" min="0">
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="!addEventForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+      </form>
+    </div>
+  </div>
+</div>

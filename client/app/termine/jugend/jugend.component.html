@@ -1,0 +1,81 @@
+<app-termine></app-termine>
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Derzeitige Jugendtermine {{youthevents.length}}</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default">
+      <tr>
+        <th>Datum</th>
+        <th>Event</th>
+        <th>Ort</th>
+        <th>Teilnehmer</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="youthevents.length === 0">
+      <tr>
+        <td colspan="4">Es stehen keine neuen Termine an.</td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+      <tr *ngFor="let youthevent of youthevents">
+        <td>{{youthevent.youthdate}}</td>
+        <td>{{youthevent.youththema}}</td>
+        <td>{{youthevent.youthplace}}</td>
+        <td>{{youthevent.youthguests}}</td>
+        <td *ngIf="auth.loggedIn && auth.isAdmin">
+          <button class="btn btn-sm btn-warning" (click)="enableYouthEditing(youthevent)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteYouthEvent(youthevent)"><i class="fa fa-trash"></i> Delete</button>
+        </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+      <tr>
+        <td colspan="4">
+          <form class="form-inline" #form="ngForm" (ngSubmit)="editYouthEvent(youthevent)" style="display:inline">
+            <div class="form-group">
+              <input class="form-control" type="datetime" name="date" [(ngModel)]="youthevent.youthdate" placeholder="Datum & Uhrzeit" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="thema" [(ngModel)]="youthevent.youththema" placeholder="Eventname" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="place" [(ngModel)]="youthevent.youthplace" placeholder="Ort" step="any" min="0" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="number" name="guests" [(ngModel)]="youthevent.youthguests" placeholder="0" step="any" min="0" required>
+            </div>
+            <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+          </form>
+          <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="auth.loggedIn && auth.isAdmin">
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Neues Event anlegen</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addYouthEventForm" (ngSubmit)="addYouthEvent()" style="text-align:center">
+      <div class="form-group">
+        <input class="form-control" type="datetime" name="youthdate" formControlName="youthdate" placeholder="Datum">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="youththema" formControlName="youththema" placeholder="Event" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="youthplace" formControlName="youthplace" placeholder="Ort" step="any" min="0">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="number" name="youthguests" formControlName="youthguests" placeholder="Gäste" step="any" min="0">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addYouthEventForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>
+</div>
